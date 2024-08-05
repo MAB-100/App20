@@ -5,6 +5,21 @@ from pathlib import Path
 import os
 
 def generate(invoices_path, pdfs_path, image_path, product_id, product_name, amount_purchased, price_per_unit, total_price):
+    """
+    Generate PDF invoices from Excel files.
+    
+    Parameters:
+    invoices_path (str): The path to the folder containing the Excel invoices.
+    pdfs_path (str): The path to the folder where the PDF invoices will be saved.
+    image_path (str): The path to the company logo image.
+    product_id (str): The name of the column containing the product ID.
+    product_name (str): The name of the column containing the product name.
+    amount_purchased (str): The name of the column containing the amount purchased.
+    price_per_unit (str): The name of the column containing the price per unit.
+    total_price (str): The name of the column containing the total price.
+    
+    """
+    
     filepaths = glob.glob(f"{invoices_path}/*.xlsx")
 
     for filepath in filepaths:
@@ -64,5 +79,6 @@ def generate(invoices_path, pdfs_path, image_path, product_id, product_name, amo
         pdf.cell(w = 20, h = 8, txt =f"CureMD")
         pdf.image(image_path, w=10)
 
-        os.makedirs(pdfs_path, exist_ok=True)
+        if not os.path.exists(pdfs_path):
+            os.makedirs(pdfs_path, exist_ok=True)
         pdf.output(f"{pdfs_path}/{filename}.pdf") 
